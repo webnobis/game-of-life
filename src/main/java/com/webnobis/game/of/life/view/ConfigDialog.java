@@ -20,6 +20,12 @@ import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+/**
+ * Configuration dialog
+ * 
+ * @author steffen
+ *
+ */
 public class ConfigDialog extends Dialog<Config> {
 
 	private final SliderPane<Integer> rows;
@@ -38,34 +44,41 @@ public class ConfigDialog extends Dialog<Config> {
 
 	private final ToggleGroup gameRuleGroup;
 
-	public ConfigDialog(Window owner, Config lastConfig, boolean readonly) {
+	/**
+	 * Configuration dialog
+	 * 
+	 * @param owner    owner
+	 * @param config   dialogs initial configuration
+	 * @param readonly read-only flag
+	 */
+	public ConfigDialog(Window owner, Config config, boolean readonly) {
 		super();
-		Objects.requireNonNull(lastConfig);
-		cols = new SliderPane<>("Columns:", ConfigRange.getRowsOrColsRange(), lastConfig.cols());
-		rows = new SliderPane<>("Rows:", ConfigRange.getRowsOrColsRange(), lastConfig.rows());
+		Objects.requireNonNull(config);
+		cols = new SliderPane<>("Columns:", ConfigRange.getRowsOrColsRange(), config.cols());
+		rows = new SliderPane<>("Rows:", ConfigRange.getRowsOrColsRange(), config.rows());
 		rows.getSlider().valueProperty().addListener((observable, oldValue, newValue) -> setColsWithRows());
 		nextLivingPeriodMilliseconds = new SliderPane<>("Next living period milliseconds:",
-				ConfigRange.getNextLivingPeriodMilliseconds(), lastConfig.nextLivingPeriodMilliseconds(), "ms");
+				ConfigRange.getNextLivingPeriodMilliseconds(), config.nextLivingPeriodMilliseconds(), "ms");
 		initLivingPercent = new SliderPane<>("Initial percent of living cells:", ConfigRange.getInitLivingPercent(),
-				lastConfig.initLivingPercent(), "%");
+				config.initLivingPercent(), "%");
 		GridPane sliderPane = new GridPane();
 		sliderPane.addColumn(0, rows, cols, nextLivingPeriodMilliseconds, initLivingPercent);
 		randomInitLiving = new CheckBox("Random initial living");
 		randomInitLiving.selectedProperty()
 				.addListener((observable, oldValue, newValue) -> initLivingPercent.setDisable(newValue));
-		randomInitLiving.setSelected(lastConfig.randomInitLiving());
+		randomInitLiving.setSelected(config.randomInitLiving());
 		neighborCellBorderless = new CheckBox("Identify neighbor cells borderless");
-		neighborCellBorderless.setSelected(lastConfig.neighborCellBorderless());
+		neighborCellBorderless.setSelected(config.neighborCellBorderless());
 		sameRowsAndCols = new CheckBox("Same rows and columns");
 		sameRowsAndCols.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			cols.getSlider().setDisable(newValue);
 			setColsWithRows();
 		});
-		sameRowsAndCols.setSelected(lastConfig.sameRowsAndCols());
+		sameRowsAndCols.setSelected(config.sameRowsAndCols());
 		gameRuleGroup = new ToggleGroup();
 		gameRuleGroup.getToggles().addAll(new RadioButton("2G3 rule, the original"), new RadioButton("4G3 rule"),
 				new RadioButton("26G3 rule"), new RadioButton("G1357 rule"));
-		gameRuleGroup.selectToggle(gameRuleGroup.getToggles().get(lastConfig.gameRuleIndex()));
+		gameRuleGroup.selectToggle(gameRuleGroup.getToggles().get(config.gameRuleIndex()));
 		GridPane gameRulePane = new GridPane();
 		gameRulePane.setHgap(5);
 		gameRulePane.setVgap(5);

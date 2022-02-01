@@ -11,6 +11,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * Slider pane containing additional informations
+ * 
+ * @author steffen
+ *
+ * @param <T> typed value
+ */
 public class SliderPane<T> extends BorderPane {
 
 	private static final int WIDTH = 200;
@@ -21,10 +28,25 @@ public class SliderPane<T> extends BorderPane {
 
 	private final Slider slider;
 
+	/**
+	 * Named slider pane of typed values
+	 * 
+	 * @param name      name
+	 * @param values    values
+	 * @param initValue initial value
+	 */
 	public SliderPane(String name, List<T> values, T initValue) {
 		this(name, values, initValue, null);
 	}
 
+	/**
+	 * Named slider pane of typed values with extension
+	 * 
+	 * @param name      name
+	 * @param values    values
+	 * @param initValue initial value
+	 * @param valueExt  value extension
+	 */
 	public SliderPane(String name, List<T> values, T initValue, String valueExt) {
 		super();
 		super.setLeft(new Label(Objects.requireNonNull(name)));
@@ -49,6 +71,11 @@ public class SliderPane<T> extends BorderPane {
 		return values.get((int) slider.getValue());
 	}
 
+	/**
+	 * Get the nested slider
+	 * 
+	 * @return slider
+	 */
 	public Slider getSlider() {
 		return slider;
 	}

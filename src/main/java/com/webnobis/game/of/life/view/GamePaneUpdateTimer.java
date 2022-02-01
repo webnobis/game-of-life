@@ -18,6 +18,12 @@ import com.webnobis.game.of.life.model.GameInfo;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Game pane update timer
+ * 
+ * @author steffen
+ * @see Config#nextLivingPeriodMilliseconds()
+ */
 class GamePaneUpdateTimer extends TimerTask {
 
 	private static final AtomicReference<Timer> currentTimerRef = new AtomicReference<>();
@@ -34,6 +40,14 @@ class GamePaneUpdateTimer extends TimerTask {
 
 	private final String gameRuleDescription;
 
+	/**
+	 * Game pane update timer
+	 * 
+	 * @param gamePane         game pane
+	 * @param radius           radius
+	 * @param config           configuration
+	 * @param gameInfoConsumer game information consumer
+	 */
 	public GamePaneUpdateTimer(GridPane gamePane, double radius, Config config, Consumer<GameInfo> gameInfoConsumer) {
 		super();
 		this.gamePane = Objects.requireNonNull(gamePane);
@@ -62,6 +76,12 @@ class GamePaneUpdateTimer extends TimerTask {
 		return (int) cells.stream().filter(Cell::living).count();
 	}
 
+	/**
+	 * Updates the living of all matrix cells.<br>
+	 * Posts the current game information to the consumer
+	 * 
+	 * @see CellPane#update(boolean)
+	 */
 	@Override
 	public void run() {
 		Platform.runLater(() -> {

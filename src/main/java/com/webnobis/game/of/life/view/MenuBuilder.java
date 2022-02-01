@@ -14,6 +14,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 
+/**
+ * Menu builder
+ * 
+ * @author steffen
+ *
+ */
 public class MenuBuilder {
 
 	private final Window parent;
@@ -26,6 +32,13 @@ public class MenuBuilder {
 
 	private final AtomicReference<GameInfo> gameInfoRef;
 
+	/**
+	 * Menu builder
+	 * 
+	 * @param parent   parent
+	 * @param gamePane game pane
+	 * @param author   author
+	 */
 	public MenuBuilder(Window parent, GridPane gamePane, String author) {
 		this.parent = Objects.requireNonNull(parent);
 		this.gamePane = Objects.requireNonNull(gamePane);
@@ -34,10 +47,20 @@ public class MenuBuilder {
 		gameInfoRef = new AtomicReference<>();
 	}
 
+	/**
+	 * Gets the current configuration of the resulting game pane
+	 * 
+	 * @return configuration
+	 */
 	public Config getConfig() {
 		return configRef.get();
 	}
 
+	/**
+	 * Creates the configuration menu
+	 * 
+	 * @return menu
+	 */
 	public Menu createConfigMenu() {
 		MenuItem newItem = new MenuItem("New");
 		newItem.setOnAction(event -> {
@@ -55,6 +78,11 @@ public class MenuBuilder {
 		return new Menu("Config", null, newItem, exitItem);
 	}
 
+	/**
+	 * Creates the information menu
+	 * 
+	 * @return menu
+	 */
 	public Menu createInfoMenu() {
 		MenuItem sourceMenu = new MenuItem("Source (Wikipedia)");
 		sourceMenu.setOnAction(event -> {
@@ -65,6 +93,11 @@ public class MenuBuilder {
 		return new Menu("Info", null, ideaMenu);
 	}
 
+	/**
+	 * Creates the right mouse button click pop-up menu
+	 * 
+	 * @return pop-up menu
+	 */
 	public ContextMenu createPopupMenu() {
 		MenuItem gameInfoItem = new MenuItem("Current game info");
 		gameInfoItem.setOnAction(event -> {

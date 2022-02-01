@@ -15,8 +15,20 @@ import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+/**
+ * Game information dialog
+ * 
+ * @author steffen
+ *
+ */
 public class GameInfoDialog extends Dialog<Void> {
 
+	/**
+	 * Game information dialog
+	 * 
+	 * @param owner    owner
+	 * @param gameInfo game information
+	 */
 	public GameInfoDialog(Window owner, GameInfo gameInfo) {
 		super();
 		Objects.requireNonNull(gameInfo);

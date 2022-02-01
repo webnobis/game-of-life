@@ -11,6 +11,12 @@ import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 
+/**
+ * Resize listener
+ * 
+ * @author steffen
+ *
+ */
 public class ResizeListener {
 
 	private final Window parent;
@@ -25,6 +31,14 @@ public class ResizeListener {
 
 	private final AtomicInteger resizeWaitCounter;
 
+	/**
+	 * Resize listener which updates the radius of all matrix cells
+	 * 
+	 * @param parent         parent
+	 * @param gamePane       game pane
+	 * @param configSupplier configuration supplier
+	 * @see CellPane#update(double)
+	 */
 	public ResizeListener(Window parent, GridPane gamePane, Supplier<Config> configSupplier) {
 		this.parent = Objects.requireNonNull(parent);
 		this.gamePane = Objects.requireNonNull(gamePane);
@@ -34,12 +48,22 @@ public class ResizeListener {
 		resizeWaitCounter = new AtomicInteger();
 	}
 
+	/**
+	 * Width has changed
+	 * 
+	 * @param newValue new value
+	 */
 	public void widthChanged(double newValue) {
 		double cellWidth = newValue / configSupplier.get().cols();
 		cellWidthRef.set(cellWidth);
 		resize();
 	}
 
+	/**
+	 * Height has changed
+	 * 
+	 * @param newValue new value
+	 */
 	public void heightChanged(double newValue) {
 		double cellHeight = newValue / configSupplier.get().rows();
 		cellHeightRef.set(cellHeight);

@@ -6,11 +6,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Game rule description
+ * 
+ * @author steffen
+ *
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface GameRuleDescription {
-	
+
+	/**
+	 * Game rule description
+	 * 
+	 * @return description
+	 */
 	String value();
 
 }

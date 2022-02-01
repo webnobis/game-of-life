@@ -7,6 +7,12 @@ import java.util.stream.IntStream;
 
 import com.webnobis.game.of.life.model.Cell;
 
+/**
+ * Matrix builder service
+ * 
+ * @author steffen
+ *
+ */
 class MatrixBuilderService implements MatrixBuilder {
 
 	private final int rows;
@@ -21,6 +27,15 @@ class MatrixBuilderService implements MatrixBuilder {
 
 	private final List<Cell> cells;
 
+	/**
+	 * Configuration depending matrix builder service
+	 * 
+	 * @param rows              rows
+	 * @param cols              columns
+	 * @param initLiving        initial living
+	 * @param neighborCellCheck neighbor cell check
+	 * @param gameRule          game rule
+	 */
 	public MatrixBuilderService(int rows, int cols, InitLiving initLiving, NeighborCellCheck neighborCellCheck,
 			GameRule gameRule) {
 		super();

@@ -14,6 +14,12 @@ import javafx.stage.Screen;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+/**
+ * Source dialog
+ * 
+ * @author steffen
+ *
+ */
 public class SourceDialog extends Dialog<Void> {
 
 	static final String SOURCE_IMAGE = ClassLoader.getSystemResource("conwaysgameoflifewikipedia.png").toString();
@@ -23,6 +29,11 @@ public class SourceDialog extends Dialog<Void> {
 	 */
 	public static final String SOURCE = "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life";
 
+	/**
+	 * Source dialog
+	 * 
+	 * @param owner owner
+	 */
 	public SourceDialog(Window owner) {
 		super();
 		super.setTitle(URLDecoder.decode(SOURCE, StandardCharsets.UTF_8));
