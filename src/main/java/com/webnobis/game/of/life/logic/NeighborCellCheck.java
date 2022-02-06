@@ -61,13 +61,16 @@ public interface NeighborCellCheck {
 	 */
 	static NeighborCellCheck ofBorderless() {
 		return (index, neighborIndex, lastIndex) -> {
+			if (index == neighborIndex || index == neighborIndex - 1 || index == neighborIndex + 1) {
+				return true;
+			}
 			if (index == 0) {
 				return neighborIndex == lastIndex;
 			}
 			if (index == lastIndex) {
 				return neighborIndex == 0;
 			}
-			return index == neighborIndex || index == neighborIndex - 1 || index == neighborIndex + 1;
+			return false;
 		};
 	}
 }

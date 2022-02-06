@@ -1,34 +1,29 @@
 package com.webnobis.game.of.life.logic;
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Test;
 
 class GameRuleTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
+	@Test
+	void testToGameRule() {
+		List<GameRule> gameRules = Arrays.asList(GameRule.of2G3(), GameRule.of4G3(), GameRule.of26G3(),
+				GameRule.ofG1357());
+		IntStream.range(0, gameRules.size())
+				.forEach(index -> assertEquals(gameRules.get(index), GameRule.toGameRule(index)));
 	}
 
 	@Test
-	void testToGameRule() {
-		GameRule gameRule = GameRule.toGameRule(0);
-		assertNotNull(gameRule);
+	void testToDescription() {
+		List<String> descriptions = Arrays.stream(GameRule.class.getAnnotationsByType(GameRuleDescription.class))
+				.map(GameRuleDescription::value).toList();
+		IntStream.range(0, descriptions.size())
+				.forEach(index -> assertEquals(descriptions.get(index), GameRule.toDescription(index)));
 	}
 
 }
