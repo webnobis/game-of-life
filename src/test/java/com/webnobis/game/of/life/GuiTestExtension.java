@@ -2,6 +2,7 @@ package com.webnobis.game.of.life;
 
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
@@ -10,7 +11,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  *
  */
 public class GuiTestExtension
-		implements ParameterResolver, BeforeAllCallback, BeforeEachCallback, AfterAllCallback, InvocationInterceptor {
+		implements ParameterResolver, BeforeAllCallback, BeforeEachCallback, InvocationInterceptor {
 
 	static final int DEFAULT_TIMEOUT_SECONDS = 10;
 
@@ -38,31 +38,47 @@ public class GuiTestExtension
 
 	private static final AtomicReference<Stage> stageRef = new AtomicReference<>();
 
-	@Override
-	public void beforeAll(ExtensionContext context) throws Exception {
-		CountDownLatch waitForStage = new CountDownLatch(1);
+	private static final AtomicReference<Thread> platformThreadRef = new AtomicReference<>();
+
+	private static final CountDownLatch waitForPlatform = new CountDownLatch(1);
+
+	/**
+	 * Starts only once the Java Fx platform and adds a shutdown hook to exits the
+	 * platform if not exited before
+	 */
+	static {
 		Platform.setImplicitExit(false);
 		Platform.startup(() -> {
-			waitForStage.countDown();
+			Optional.of(Thread.currentThread()).filter(unused -> Platform.isFxApplicationThread())
+					.ifPresent(platformThreadRef::set);
+			waitForPlatform.countDown();
 		});
-		waitForStage.await(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> Optional.ofNullable(platformThreadRef.getAndSet(null))
+				.filter(thread -> thread.isAlive()).ifPresent(unused -> Platform.exit())));
 	}
 
+	/**
+	 * Waits until the Java Fx platform is running
+	 */
+	@Override
+	public void beforeAll(ExtensionContext context) throws Exception {
+		waitForPlatform.await(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * Creates a new primary stage
+	 */
 	@Override
 	public void beforeEach(ExtensionContext context) throws Exception {
 		CountDownLatch waitForStage = new CountDownLatch(1);
 		Platform.runLater(() -> {
 			stageRef.set(new Stage() {
+				// overwritten, because package scope method
 				private boolean primary = true;
 			});
 			waitForStage.countDown();
 		});
 		waitForStage.await(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-	}
-
-	@Override
-	public void afterAll(ExtensionContext context) throws Exception {
-		Platform.exit();
 	}
 
 	@Override
@@ -87,11 +103,7 @@ public class GuiTestExtension
 				}
 			}, STAGE_SHOWING_CHECK_INTERVAL_MILLIS, STAGE_SHOWING_CHECK_INTERVAL_MILLIS);
 		});
-		try {
-			waitUntilTimeout(context.getRequiredTestMethod(), waitForStageNotMoreShowing);
-		} finally {
-			//
-		}
+		waitUntilTimeout(context.getRequiredTestMethod(), waitForStageNotMoreShowing);
 	}
 
 	private void waitUntilTimeout(Method method, CountDownLatch waitFor) throws InterruptedException, TimeoutException {
