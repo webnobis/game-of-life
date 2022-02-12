@@ -1,6 +1,7 @@
 package com.webnobis.game.of.life;
 
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import com.webnobis.game.of.life.view.MenuBuilder;
 import com.webnobis.game.of.life.view.ResizeListener;
@@ -24,7 +25,7 @@ public class GameOfLife extends Application {
 	private static final ResourceBundle releaseProperties = ResourceBundle.getBundle("release");
 
 	// maybe changed by tests
-	static Class<? extends Application> startClass = GameOfLife.class;
+	static Consumer<Class<? extends Application>> starter = Application::launch;
 
 	/**
 	 * Creates the base dialog of the game with menu and game pane
@@ -62,7 +63,7 @@ public class GameOfLife extends Application {
 	 * @see Application#launch(Class, String...)
 	 */
 	public static void main(String[] args) {
-		Application.launch(startClass, args);
+		starter.accept(GameOfLife.class);
 	}
 
 }

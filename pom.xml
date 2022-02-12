@@ -71,12 +71,13 @@
 			<version>2.17.1</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit5</artifactId>
-			<version>4.0.16-alpha</version>
+		<dependency>
+			<groupId>com.webnobis.commons.fx</groupId>
+			<artifactId>fx-commons</artifactId>
+			<version>0.0.1</version>
 			<scope>test</scope>
-		</dependency-->
+			<classifier>tests</classifier>
+		</dependency>
 	</dependencies>
 
 	<build>
