@@ -10,7 +10,7 @@
 		<project.module>com.webnobis.game.of.life</project.module>
 		<project.main.class>com.webnobis.game.of.life.GameOfLife</project.main.class>
 		<project.author>Steffen Nobis</project.author>
-		<java.fx.version>18.0.1</java.fx.version>
+		<java.fx.version>19</java.fx.version>
 		<junit.version>5.9.1</junit.version>
 	</properties>
 
