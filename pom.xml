@@ -10,7 +10,7 @@
 		<project.module>com.webnobis.game.of.life</project.module>
 		<project.main.class>com.webnobis.game.of.life.GameOfLife</project.main.class>
 		<project.author>Steffen Nobis</project.author>
-		<java.fx.version>27-ea+6</java.fx.version>
+		<java.fx.version>25.0.2</java.fx.version>
 		<junit.version>6.0.3</junit.version>
 	</properties>
 
@@ -61,7 +61,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
 			<version>2.25.3</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -75,8 +75,8 @@
 			<groupId>com.webnobis.commons.fx</groupId>
 			<artifactId>fx-commons</artifactId>
 			<version>1.0.0</version>
-			<scope>test</scope>
-			<classifier>tests</classifier>
+			<scope>system</scope>
+            <systemPath>${project.basedir}/libs/fx-commons_1.0.0-tests.jar</systemPath>
 		</dependency>
 	</dependencies>
 
